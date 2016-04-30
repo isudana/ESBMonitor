@@ -27,7 +27,7 @@ public class RemoteConnector {
             env.put(JMXConnector.CREDENTIALS, credentials);
 
             connector = JMXConnectorFactory.connect(target, env);
-            MBeanServerConnection remote = connector.getMBeanServerConnection();
+            remote = connector.getMBeanServerConnection();
 
         }catch (MalformedURLException e) {
             e.printStackTrace();
