@@ -4,6 +4,7 @@ import org.wso2.connector.RemoteConnector;
 
 import javax.management.*;
 import java.io.IOException;
+import java.lang.management.MemoryUsage;
 
 /**
  * Created by Dinanjana on 30/04/2016.
@@ -17,7 +18,7 @@ public class MemoryExtractor {
         ObjectName bean = null;
         try {
             bean = new ObjectName("java.lang:type=Memory");
-            MBeanInfo info = RemoteConnector.getRemote().getMBeanInfo(bean);
+            memoryInfo = RemoteConnector.getRemote().getMBeanInfo(bean);
 
         } catch (MalformedObjectNameException e) {
             e.printStackTrace();
@@ -29,6 +30,12 @@ public class MemoryExtractor {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public static void checkWarningUsage(){
+        if(memoryInfo!= null){
+           MemoryUsage memoryUsage =  
         }
     }
 }
