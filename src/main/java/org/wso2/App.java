@@ -1,6 +1,7 @@
 package org.wso2;
 
 import org.wso2.connector.RemoteConnector;
+import org.wso2.jvmDetails.MemoryExtractor;
 
 import javax.management.MBeanAttributeInfo;
 import javax.management.MBeanInfo;
@@ -21,10 +22,11 @@ import java.util.TreeSet;
 public class App 
 {
     private static TreeSet<ObjectName> mbeansNames = null;
-    public static void main( String[] args )
-    {
-            RemoteConnector.defaultConnector();
-            MBeanServerConnection remote = RemoteConnector.getRemote();
+    public static void main( String[] args ) throws IOException {
+        RemoteConnector.defaultConnector();
+        MBeanServerConnection remote = RemoteConnector.getRemote();
+        MemoryExtractor.getMemoryInfo();
+        RemoteConnector.closeConnection();
             //Find this from jConsole
 
         try {
