@@ -6,7 +6,7 @@ import org.wso2.connector.RemoteConnector;
 import javax.management.*;
 import javax.management.openmbean.CompositeData;
 import java.io.IOException;
-import java.lang.management.MemoryUsage;
+
 
 /**
  * Created by Dinanjana on 30/04/2016.
@@ -15,7 +15,7 @@ public class MemoryExtractor {
 
     private static MBeanInfo memoryInfo;
     private static ObjectName bean = null;
-    private static double MEMORY = 0.9;
+    private static double MEMORY = 0.05;
     final static Logger logger = Logger.getLogger(MemoryExtractor.class);
 
     public static void getMemoryInfo()  {
@@ -37,7 +37,7 @@ public class MemoryExtractor {
         }
     }
 
-    public static void checkWarningUsage(){
+    public static boolean checkWarningUsage(){
         if(memoryInfo!= null){
             MBeanAttributeInfo [] mBeanAttributeInfos = memoryInfo.getAttributes();
 //            for(MBeanAttributeInfo mBeanAttributeInfo : mBeanAttributeInfos){
@@ -54,6 +54,7 @@ public class MemoryExtractor {
 
                 if((double)usedMemory/maxMemory > MEMORY){
                     logger.info("MemoryExtractor.java:53 High memory usage");
+                    return true;
                 }
                 else{
                     logger.info("MemoryExtractor.java:56 Memory usage is normal " + (double)usedMemory/maxMemory);
@@ -71,5 +72,6 @@ public class MemoryExtractor {
             }
 
         }
+        return false;
     }
 }

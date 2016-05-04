@@ -1,6 +1,7 @@
 package org.wso2;
 
 import org.wso2.connector.RemoteConnector;
+import org.wso2.dumpHandlers.ThreadDumpCreator;
 import org.wso2.jvmDetails.MemoryExtractor;
 
 import javax.management.MBeanAttributeInfo;
@@ -26,6 +27,10 @@ public class App
         RemoteConnector.defaultConnector();
         MBeanServerConnection remote = RemoteConnector.getRemote();
         MemoryExtractor.getMemoryInfo();
+        if(MemoryExtractor.checkWarningUsage()){
+            System.out.println(ThreadDumpCreator.generateThreadDump());
+            ThreadDumpCreator.getMbeanInfo();
+        }
         RemoteConnector.closeConnection();
             //Find this from jConsole
 
@@ -47,6 +52,8 @@ public class App
         }catch (Exception e){
 
         }
+
+        //RemoteConnector.closeConnection();
 
     }
 }
