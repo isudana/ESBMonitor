@@ -19,6 +19,7 @@ public class ThreadDumpCreator {
     private static MBeanInfo memoryInfo;
     private static ObjectName bean = null;
 
+    /**For testing purposes only*/
     public static String generateThreadDump() {
         final StringBuilder dump = new StringBuilder();
         final ThreadMXBean threadMXBean = ManagementFactory.getThreadMXBean();
@@ -65,12 +66,22 @@ public class ThreadDumpCreator {
                 final String state = (String) threadInfo.get("threadState");
                 dump.append("\n   java.lang.Thread.State: ");
                 dump.append(state);
-                final StackTraceElement[] stackTraceElements = (StackTraceElement[]) threadInfo.get("stackTrace");
-                for (final StackTraceElement stackTraceElement : stackTraceElements) {
+                final CompositeData[] stackTraceElements = (CompositeData[]) threadInfo.get("stackTrace");
+                System.out.println(threadInfo.toString());
+                for (CompositeData stackTraceElement : stackTraceElements) {
                     dump.append("\n        at ");
-                    dump.append(stackTraceElement);
+                   // String declaringClass= (String) stackTraceElement.get("declaringClass");
+                    String methodName= (String) stackTraceElement.get("methodName");
+                    String fileName= (String) stackTraceElement.get("fileName");
+                    int lineNumber=(Integer)stackTraceElement.get("lineNumber");
+                    dump.append(/*declaringClass + */"." + methodName +
+                            ((lineNumber==-2) ? "(Native Method)" :
+                                    (fileName != null && lineNumber >= 0 ?
+                                            "(" + fileName + ":" + lineNumber + ")" :
+                                            (fileName != null ?  "("+fileName+")" : "(Unknown Source)"))));
                 }
                 dump.append("\n\n");
+                System.out.println(dump.toString());
             }
             //ThreadInfo[] threadInfos = threadMXBean.getThreadInfo(threadMXBean.getAllThreadIds(), 100);
 
@@ -85,9 +96,9 @@ public class ThreadDumpCreator {
         } catch (IOException e) {
             logger.error("MemoryExtractor.java:33 " + e.getMessage());
         } catch (MBeanException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         } catch (AttributeNotFoundException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
     }
 

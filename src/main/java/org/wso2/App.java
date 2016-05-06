@@ -28,7 +28,7 @@ public class App
         MBeanServerConnection remote = RemoteConnector.getRemote();
         MemoryExtractor.getMemoryInfo();
         if(MemoryExtractor.checkWarningUsage()){
-            System.out.println(ThreadDumpCreator.generateThreadDump());
+            //System.out.println(ThreadDumpCreator.generateThreadDump());
             ThreadDumpCreator.getMbeanInfo();
         }
         RemoteConnector.closeConnection();
