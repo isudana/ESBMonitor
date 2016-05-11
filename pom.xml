@@ -34,7 +34,7 @@
         <artifactId>exec-maven-plugin</artifactId>
         <version>1.2.1</version>
         <configuration>
-          <mainClass>org.wso2.App</mainClass>
+          <mainClass>org.wso2.ESBMonitor</mainClass>
           <arguments>
             <argument>argument1</argument>
           </arguments>

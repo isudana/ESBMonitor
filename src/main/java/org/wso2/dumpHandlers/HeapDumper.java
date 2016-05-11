@@ -1,11 +1,14 @@
 package org.wso2.dumpHandlers;
 
 /**
- * Created by Dinanjana on 06/05/2016.
+ * Created by Dinanjana
+ * on 06/05/2016.
  */
+
+import com.sun.management.HotSpotDiagnosticMXBean;
+
 import javax.management.MBeanServer;
 import java.lang.management.ManagementFactory;
-import com.sun.management.HotSpotDiagnosticMXBean;
 
 public class HeapDumper {
     // This is the name of the HotSpot Diagnostic MBean
@@ -14,9 +17,8 @@ public class HeapDumper {
 
     // field to store the hotspot diagnostic MBean
     private static volatile HotSpotDiagnosticMXBean hotspotMBean;
-
-//    /\*\*
-//            \* Call this method from your application whenever you
+    //    /\*\*
+//       Call this method from your application whenever you
 //    \* want to dump the heap snapshot into a file.
 //    \*
 //            \* @param fileName name of the heap dump file
@@ -64,7 +66,7 @@ public class HeapDumper {
 
     public static void main(String[] args) {
         // default heap dump file name
-        String fileName = "heap.txt";
+        String fileName = "heap.bin";
         // by default dump only the live objects
         boolean live = true;
 
