@@ -1,22 +1,18 @@
 package org.wso2.reporting;
 
-import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
-import net.sf.dynamicreports.report.builder.DynamicReports;
-import net.sf.dynamicreports.report.builder.column.Columns;
+
 import net.sf.dynamicreports.report.builder.column.TextColumnBuilder;
-import net.sf.dynamicreports.report.builder.component.Components;
-import net.sf.dynamicreports.report.builder.datatype.DataTypes;
-import net.sf.dynamicreports.report.constant.HorizontalAlignment;
 import net.sf.dynamicreports.report.datasource.DRDataSource;
 import net.sf.dynamicreports.report.exception.DRException;
-import net.sf.jasperreports.engine.util.ReportCreator;
 import org.apache.log4j.Logger;
-import org.bouncycastle.util.test.Test;
+import org.wso2.reporting.beans.ESBEvent;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.net.URL;
 import java.util.Date;
+import java.util.Observable;
+import java.util.Observer;
+
 import static net.sf.dynamicreports.report.builder.DynamicReports.col;
 import static net.sf.dynamicreports.report.builder.DynamicReports.report;
 import static net.sf.dynamicreports.report.builder.DynamicReports.type;
@@ -24,7 +20,7 @@ import static net.sf.dynamicreports.report.builder.DynamicReports.type;
 /**
  * Created by Dinanjana on 14/05/2016.
  */
-public class ReportGenerator {
+public class ReportGenerator implements Observer {
     private static Logger logger = Logger.getLogger(ReportGenerator.class);
     private static DRDataSource drDataSource = new DRDataSource("date", "reason", "dumpLocation");
     private static String reportLocation ="E:/Project/esbMonitor/report.pdf";
@@ -57,8 +53,12 @@ public class ReportGenerator {
 
     }
 
-    public static void addEventToReport(String reason,String dumpLocation){
-        drDataSource.add(new Date(),reason,dumpLocation);
+    public static void addEventToReport(ESBEvent esbEvent){
+        drDataSource.add(esbEvent.getDate(),esbEvent.getReason(),esbEvent.getDumplocation());
+    }
+
+    public void update(Observable o, Object arg) {
+        createReport();
     }
 
 //    public static void main(String[] arg){
