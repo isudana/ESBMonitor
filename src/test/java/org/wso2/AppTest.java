@@ -5,7 +5,7 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 /**
- * Unit test for simple ESBMonitor.
+ * Unit test for simple esbMonitor.
  */
 public class AppTest 
     extends TestCase
