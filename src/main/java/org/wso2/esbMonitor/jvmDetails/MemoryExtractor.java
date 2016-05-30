@@ -58,7 +58,6 @@ public class MemoryExtractor extends Thread{
 
     public void run(){
         while (true){
-            getMemoryInfo();
             if(checkWarningUsage()){
                 ThreadDumpCreator.getMbeanInfo();
             }

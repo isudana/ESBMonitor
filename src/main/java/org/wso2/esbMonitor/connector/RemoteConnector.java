@@ -40,6 +40,7 @@ public class RemoteConnector {
             logger.error(e.getStackTrace());
         } catch (IOException e) {
             logger.error(e.getStackTrace());
+            e.printStackTrace();
         }
     }
 
