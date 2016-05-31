@@ -10,21 +10,20 @@ import java.lang.management.OperatingSystemMXBean;
  * Created by Dinanjana on 30/05/2016.
  * Finds out cpu load
  */
-public class CPULoadExtractor {
-    final static Logger logger = Logger.getLogger(CPULoadExtractor.class);
+public class CPULoadMonitor {
+    final static Logger logger = Logger.getLogger(CPULoadMonitor.class);
     private static ObjectName bean = null;
 
     //needs to be initialized from a property file
-    private static double CPU_LOAD = 0.05;
-    private static long TIMEOUT = 3000;
+    private static double CPU_LOAD;
 
-    public static void getMemoryInfo() {
+    public void getMbeanInfo() {
         try {
             bean = new ObjectName("java.lang:type=OperatingSystem");
-            //checkWarningUsage(bean);
+            checkWarningUsage(bean);
 
         } catch (MalformedObjectNameException e) {
-            logger.error("CPULoadExtractor " + e.getMessage());
+            logger.error("CPULoadMonitor " + e.getMessage());
         }
     }
 
@@ -36,25 +35,15 @@ public class CPULoadExtractor {
 
         if (cpuLoad > CPU_LOAD) {
             logger.info(":High CPU load");
+            ThreadDumpCreator.generateThreadDump();
             return true;
         } else {
-            logger.info("cpu load is normal ");
+            logger.info("cpu load is normal: " + cpuLoad);
         }
         return false;
     }
 
-    public void run(){
-        while (true){
-            getMemoryInfo();
-            if(checkWarningUsage(bean)){
-                ThreadDumpCreator.getMbeanInfo();
-            }
-            try {
-                Thread.sleep(TIMEOUT);
-            } catch (InterruptedException e) {
-                logger.error(e.getMessage());
-            }
-        }
+    public static void setCpuLoad(double cpuLoad) {
+        CPU_LOAD = cpuLoad;
     }
-
 }

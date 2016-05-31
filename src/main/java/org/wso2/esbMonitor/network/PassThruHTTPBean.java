@@ -1,17 +1,22 @@
-package org.wso2.esbMonitor.jvmDetails.transport;
+package org.wso2.esbMonitor.network;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.annotation.Generated;
+import javax.persistence.*;
+import java.util.Date;
 
 /**
  * Created by Dinanjana on 29/05/2016.
  * This serves as the DAO object for network
  * traffic details
  */
-
+@Entity
 @Table(name = "HTTP_LOG")
 public class PassThruHTTPBean {
+
+    @Id
+    @GeneratedValue
+    @Column(name = "id")
+    private int id;
 
     @Column(name = "activeThreadCount")
     private int activeThreadCount;
@@ -37,20 +42,31 @@ public class PassThruHTTPBean {
     @Column(name ="queueSize")
     private int queueSize;
 
+    @Column(name = "time")
+    private Date date;
+
+    public double getAvgSizeRecieved() {
+        return avgSizeRecieved;
+    }
+
+    public void setAvgSizeRecieved(double avgSizeRecieved) {
+        this.avgSizeRecieved = avgSizeRecieved;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
     public int getActiveThreadCount() {
         return activeThreadCount;
     }
 
     public void setActiveThreadCount(int activeThreadCount) {
         this.activeThreadCount = activeThreadCount;
-    }
-
-    public double getAvgSizeREcieved() {
-        return avgSizeRecieved;
-    }
-
-    public void setAvgSizeREcieved(double avgSizeREcieved) {
-        this.avgSizeRecieved = avgSizeREcieved;
     }
 
     public double getAvgSizeSent() {

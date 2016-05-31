@@ -6,40 +6,49 @@ package org.wso2.esbMonitor.dumpHandlers;
  */
 
 import com.sun.management.HotSpotDiagnosticMXBean;
+import org.wso2.esbMonitor.connector.RemoteConnector;
 
+import javax.management.JMX;
 import javax.management.MBeanServer;
+import javax.management.MBeanServerConnection;
+import javax.management.ObjectName;
 import java.lang.management.ManagementFactory;
+import java.util.Date;
 
-public class HeapDumper {
-    // This is the name of the HotSpot Diagnostic MBean
+/**
+ * This class creates heap dumps
+ * on the monitored JVM instance
+ * For an example the heap dump will
+ * be created on HOME path of the
+ * wso2esb
+ *
+ * Works only with HotSpotJVM
+ *
+ * */
+public class HeapDumper extends Thread {
+
     private static final String HOTSPOT_BEAN_NAME =
             "com.sun.management:type=HotSpotDiagnostic";
-
-    // field to store the hotspot diagnostic MBean
     private static volatile HotSpotDiagnosticMXBean hotspotMBean;
-    //    /\*\*
-//       Call this method from your application whenever you
-//    \* want to dump the heap snapshot into a file.
-//    \*
-//            \* @param fileName name of the heap dump file
-//    \* @param live flag that tells whether to dump
-//    \*             only the live objects
-//    \*/
+    private static final Object HEAP_DUMP_IN_PROGRESS = new Object();
+    private static String fileName = " ";
+
     static void dumpHeap(String fileName, boolean live) {
-        // initialize hotspot diagnostic MBean
-        initHotspotMBean();
-        try {
-            hotspotMBean.dumpHeap(fileName, live);
-        } catch (RuntimeException re) {
-            throw re;
-        } catch (Exception exp) {
-            throw new RuntimeException(exp);
+         synchronized (HEAP_DUMP_IN_PROGRESS){
+            initHotspotMBean();
+            try {
+                hotspotMBean.dumpHeap(fileName, live);
+            } catch (RuntimeException re) {
+                throw re;
+            } catch (Exception exp) {
+                throw new RuntimeException(exp);
+            }
         }
+
     }
 
-    // initialize the hotspot diagnostic MBean field
-    private static void initHotspotMBean() {
-        if (hotspotMBean == null) {
+    private static synchronized void initHotspotMBean() {
+        if (hotspotMBean == null ) {
             synchronized (HeapDumper.class) {
                 if (hotspotMBean == null) {
                     hotspotMBean = getHotspotMBean();
@@ -48,14 +57,13 @@ public class HeapDumper {
         }
     }
 
-    // get the hotspot diagnostic MBean from the
-    // platform MBean server
+
     private static HotSpotDiagnosticMXBean getHotspotMBean() {
         try {
-            MBeanServer server = ManagementFactory.getPlatformMBeanServer();
-            HotSpotDiagnosticMXBean bean =
-                    ManagementFactory.newPlatformMXBeanProxy(server,
-                            HOTSPOT_BEAN_NAME, HotSpotDiagnosticMXBean.class);
+            MBeanServerConnection remote = RemoteConnector.getRemote();
+            HotSpotDiagnosticMXBean bean = JMX.newMBeanProxy(remote,
+                    new ObjectName(HOTSPOT_BEAN_NAME),
+                    HotSpotDiagnosticMXBean.class);
             return bean;
         } catch (RuntimeException re) {
             throw re;
@@ -64,21 +72,16 @@ public class HeapDumper {
         }
     }
 
-    public static void main(String[] args) {
+    public void run(){
         // default heap dump file name
-        String fileName = "heap.bin";
+        Date date = new Date();
+        String name = fileName + "heap"+date.getTime()+".bin";
         // by default dump only the live objects
         boolean live = true;
+        dumpHeap(name,live);
+    }
 
-        // simple command line options
-        switch (args.length) {
-            case 2:
-                live = args[1].equals("true");
-            case 1:
-                fileName = args[0];
-        }
-
-        // dump the heap
-        dumpHeap(fileName, live);
+    public static void setFileName(String fileName) {
+        HeapDumper.fileName = fileName;
     }
 }
