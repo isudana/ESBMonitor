@@ -1,9 +1,12 @@
 package org.wso2.esbMonitor;
 
-import org.wso2.esbMonitor.connector.DBConnector;
+import org.wso2.esbMonitor.configuration.Configuration;
 import org.wso2.esbMonitor.connector.RemoteConnector;
-import org.wso2.esbMonitor.jvmDetails.MemoryExtractor;
-import org.wso2.esbMonitor.jvmDetails.NetworkMonitor;
+import org.wso2.esbMonitor.dumpHandlers.HeapDumper;
+import org.wso2.esbMonitor.persistance.HibernateSessionCreator;
+import org.wso2.esbMonitor.tasks.DBTaskRunner;
+import org.wso2.esbMonitor.tasks.JVMTaskRunner;
+import org.wso2.esbMonitor.tasks.NetworkMonitor;
 
 import javax.management.MBeanAttributeInfo;
 import javax.management.MBeanInfo;
@@ -20,16 +23,22 @@ public class ESBMonitor {
 
 
     public static void main(String[] args) throws IOException {
+
+        new Configuration().initProperties();
         RemoteConnector.defaultConnector();
+        HibernateSessionCreator.init();
         MBeanServerConnection remote = RemoteConnector.getRemote();
-        MemoryExtractor memoryExtractor = new MemoryExtractor();
-        DBConnector dbConnector = new DBConnector();
-        dbConnector.createDBConnection();
-        dbConnector.closeDBConnection();
-        NetworkMonitor networkMonitor = new NetworkMonitor();
-        networkMonitor.start();
-        //memoryExtractor.start();
-        //RemoteConnector.closeConnection();
+
+        /**
+         * Tasks start here
+         *  1)JVM monitor
+         *  2)Network traffic monitor
+         *  3)Persistence service
+         *
+         *  */
+        new JVMTaskRunner().start();
+        new NetworkMonitor().start();
+        new DBTaskRunner().start();
         try {
             ObjectName bean = new ObjectName("org.apache.synapse:Type=Transport,Name=passthru-http-receiver");
             MBeanInfo info = remote.getMBeanInfo(bean);

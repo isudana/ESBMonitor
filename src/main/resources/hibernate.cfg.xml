@@ -5,7 +5,7 @@
 <hibernate-configuration>
     <session-factory>
         <property name="hibernate.connection.url">
-            jdbc:derby:wso2FlightRecorder;create=true
+            jdbc:derby:wso2FlightRecorder
         </property>
         <property name="hibernate.connection.driver_class">
             org.apache.derby.jdbc.EmbeddedDriver
@@ -16,6 +16,7 @@
         <property name="connection.username"/>
         <property name="connection.password"/>
         <!-- DB schema will be updated if needed -->
-         <property name="hbm2ddl.auto">create</property>
+         <property name="hibernate.hbm2ddl.auto">create</property>
+        <mapping class="org.wso2.esbMonitor.network.PassThruHTTPBean"></mapping>
     </session-factory>
 </hibernate-configuration>

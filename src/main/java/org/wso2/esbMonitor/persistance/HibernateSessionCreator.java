@@ -9,7 +9,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.service.ServiceRegistryBuilder;
-import org.wso2.esbMonitor.jvmDetails.transport.PassThruHTTPBean;
+import org.wso2.esbMonitor.network.PassThruHTTPBean;
 
 import java.util.Map;
 
@@ -17,17 +17,19 @@ import java.util.Map;
  * Created by Dinanjana on 22/05/2016.
  */
 public class HibernateSessionCreator {
-    private static final SessionFactory ourSessionFactory;
-    private static final ServiceRegistry serviceRegistry;
+    private static SessionFactory ourSessionFactory;
+    private static ServiceRegistry serviceRegistry;
 
-    static {
+    public static void init() {
         try {
             Configuration configuration = new Configuration();
             configuration.configure();
 
             serviceRegistry = new ServiceRegistryBuilder().applySettings(configuration.getProperties()).buildServiceRegistry();
-            //ourSessionFactory = configuration.buildSessionFactory(serviceRegistry);
-            ourSessionFactory = new AnnotationConfiguration().addAnnotatedClass(PassThruHTTPBean.class).configure().buildSessionFactory(serviceRegistry);
+            ourSessionFactory = new AnnotationConfiguration()
+                    .addAnnotatedClass(PassThruHTTPBean.class)
+                    .configure()
+                    .buildSessionFactory(serviceRegistry);
         } catch (Throwable ex) {
             throw new ExceptionInInitializerError(ex);
         }
