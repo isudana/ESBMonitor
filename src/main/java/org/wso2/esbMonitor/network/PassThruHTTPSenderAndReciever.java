@@ -42,7 +42,7 @@ public class PassThruHTTPSenderAndReciever {
             passThruHTTPBean.setQueueSize((Integer) RemoteConnector.getMbeanAttribute(mbeanName,"QueueSize"));
             passThruHTTPBean.setMessageSent((Long) RemoteConnector.getMbeanAttribute(mbeanName,"MessagesSent"));
             passThruHTTPBean.setMessagesRecieved((Long) RemoteConnector.getMbeanAttribute(mbeanName, "MessagesReceived"));
-            passThruHTTPBean.setDate(new Date());
+            //passThruHTTPBean.setDate(new Date());
 
             logger.info(passThruHTTPBean.getMessageSent() +" "+ passThruHTTPBean.getActiveThreadCount());
             if (passThruHTTPBean.getActiveThreadCount() > maxThreadCount || passThruHTTPBean.getQueueSize() > maxQueueSize) {

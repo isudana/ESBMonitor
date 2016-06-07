@@ -24,24 +24,33 @@ public class RemoteConnector {
 
     public static void defaultConnector() {
         try {
-            JMXServiceURL target = new JMXServiceURL
-                    ("service:jmx:rmi://localhost:11111/jndi/rmi://localhost:9999/jmxrmi");
-            //for passing credentials for password
-            Map<String, String[]> env = new HashMap<String, String[]>();
-            String[] credentials = {"admin", "admin"};
-            env.put(JMXConnector.CREDENTIALS, credentials);
-            connector = JMXConnectorFactory.connect(target, env);
-            remote = connector.getMBeanServerConnection();
-            logger.info("MbeanServer connection obtained");
-
-
-
+            connect();
         } catch (MalformedURLException e) {
             logger.error(e.getStackTrace());
         } catch (IOException e) {
-            logger.error(e.getStackTrace());
-            e.printStackTrace();
+            logger.error("IO error in connecting",e);
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e1) {
+                logger.error("Thread interrupted",e);
+            }
+
         }
+    }
+
+    private static void connect() throws IOException {
+        JMXServiceURL target = new JMXServiceURL
+                ("service:jmx:rmi://localhost:11111/jndi/rmi://localhost:9999/jmxrmi");
+        //for passing credentials for password
+        Map<String, String[]> env = new HashMap<String, String[]>();
+        String[] credentials = {"admin", "admin"};
+        env.put(JMXConnector.CREDENTIALS, credentials);
+        connector = JMXConnectorFactory.connect(target, env);
+        remote = connector.getMBeanServerConnection();
+        logger.info("MbeanServer connection obtained");
+
+
+
     }
 
     public static MBeanServerConnection getRemote() {

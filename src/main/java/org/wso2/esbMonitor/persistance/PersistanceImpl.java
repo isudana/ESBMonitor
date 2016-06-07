@@ -33,16 +33,20 @@ public class PersistanceImpl {
             if (scheduledList.size() > 0){
                 logger.info("Started persisting");
                 Session session = HibernateSessionCreator.getSession();
-                Transaction tx;
-                tx = session.beginTransaction();
+
                 for(PassThruHTTPBean passThruHTTPBean : scheduledList){
-                    session.save(passThruHTTPBean);
+                    Transaction tx;
+                    tx = session.beginTransaction();
+                    //session.save(passThruHTTPBean);
+                    session.persist(passThruHTTPBean);
+                    tx.commit();
                 }
-                tx.commit();
+
 //                org.hibernate.Query query = session.createSQLQuery("SELECT * FROM org.wso2.esbMonitor.network.PassThruHTTPBean c");
 //                java.util.List list = query.list();
 //                System.out.println(list);
 //                logger.info(list.get(0));
+                session.flush();
                 session.close();
                 scheduledList.clear();
             }

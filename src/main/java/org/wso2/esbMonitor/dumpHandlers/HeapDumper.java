@@ -31,7 +31,7 @@ public class HeapDumper extends Thread {
             "com.sun.management:type=HotSpotDiagnostic";
     private static volatile HotSpotDiagnosticMXBean hotspotMBean;
     private static final Object HEAP_DUMP_IN_PROGRESS = new Object();
-    private static String fileName = " ";
+    private static String fileName = "heap//";
 
     static void dumpHeap(String fileName, boolean live) {
          synchronized (HEAP_DUMP_IN_PROGRESS){
@@ -75,7 +75,7 @@ public class HeapDumper extends Thread {
     public void run(){
         // default heap dump file name
         Date date = new Date();
-        String name = fileName + "heap"+date.getTime()+".bin";
+        String name = "HeapDump "+date.toString().replaceAll(":","")+".bin";
         // by default dump only the live objects
         boolean live = true;
         dumpHeap(name,live);

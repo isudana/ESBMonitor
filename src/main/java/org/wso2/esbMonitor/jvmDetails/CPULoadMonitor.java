@@ -35,7 +35,8 @@ public class CPULoadMonitor {
 
         if (cpuLoad > CPU_LOAD) {
             logger.info(":High CPU load");
-            ThreadDumpCreator.generateThreadDump();
+            if (!ThreadDumpCreator.isThreadDumpInProgress())
+                ThreadDumpCreator.generateThreadDump();
             return true;
         } else {
             logger.info("cpu load is normal: " + cpuLoad);

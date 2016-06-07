@@ -62,7 +62,7 @@
       <groupId>org.apache.derby</groupId>
       <artifactId>derby</artifactId>
       <version>10.12.1.1</version>
-      <scope>runtime</scope>
+      <!--<scope>runtime</scope>-->
     </dependency>
     <!-- http://mvnrepository.com/artifact/org.apache.synapse/synapse-core -->
     <!--<dependency>-->

@@ -45,3 +45,13 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
+
+# intellij files
+*.class
+.classpath
+.settings
+.project
+*.iml
+*.iws
+*.ipr
+.idea

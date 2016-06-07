@@ -26,10 +26,11 @@ public class HibernateSessionCreator {
             configuration.configure();
 
             serviceRegistry = new ServiceRegistryBuilder().applySettings(configuration.getProperties()).buildServiceRegistry();
-            ourSessionFactory = new AnnotationConfiguration()
-                    .addAnnotatedClass(PassThruHTTPBean.class)
-                    .configure()
-                    .buildSessionFactory(serviceRegistry);
+            ourSessionFactory =new AnnotationConfiguration().
+                    configure().
+                    //addPackage("com.xyz") //add package if used.
+                            addAnnotatedClass(PassThruHTTPBean.class).
+                    buildSessionFactory();
         } catch (Throwable ex) {
             throw new ExceptionInInitializerError(ex);
         }
