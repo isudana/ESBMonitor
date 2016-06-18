@@ -74,17 +74,17 @@
   </dependencies>
   <build>
     <plugins>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>exec-maven-plugin</artifactId>
-        <version>1.2.1</version>
-        <configuration>
-          <mainClass>org.wso2.esbMonitor.ESBMonitor</mainClass>
-          <arguments>
-            <argument>argument1</argument>
-          </arguments>
-        </configuration>
-      </plugin>
+      <!--<plugin>-->
+        <!--<groupId>org.codehaus.mojo</groupId>-->
+        <!--<artifactId>exec-maven-plugin</artifactId>-->
+        <!--<version>1.2.1</version>-->
+        <!--<configuration>-->
+          <!--<mainClass>org.wso2.esbMonitor.ESBMonitor</mainClass>-->
+          <!--<arguments>-->
+            <!--<argument>argument1</argument>-->
+          <!--</arguments>-->
+        <!--</configuration>-->
+      <!--</plugin>-->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -93,6 +93,21 @@
           <target>1.8</target>
         </configuration>
       </plugin>
-    </plugins>
+        <!-- Build an executable JAR -->
+        <plugin>
+          <artifactId>maven-assembly-plugin</artifactId>
+          <configuration>
+            <archive>
+              <manifest>
+                <mainClass>org.wso2.esbMonitor.ESBMonitor</mainClass>
+              </manifest>
+            </archive>
+            <descriptorRefs>
+              <descriptorRef>jar-with-dependencies</descriptorRef>
+            </descriptorRefs>
+          </configuration>
+        </plugin>
+      </plugins>
   </build>
 </project>
+

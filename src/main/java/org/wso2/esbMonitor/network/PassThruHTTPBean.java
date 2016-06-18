@@ -1,7 +1,6 @@
 package org.wso2.esbMonitor.network;
 
-import javax.annotation.Generated;
-import javax.persistence.*;
+
 import java.util.Date;
 
 /**
@@ -9,42 +8,19 @@ import java.util.Date;
  * This serves as the DAO object for network
  * traffic details
  */
-@Entity
-@Table(name = "HTTP_LOG")
+
 public class PassThruHTTPBean {
 
-    @Id
-    @GeneratedValue
-    @Column(name = "id")
     private int id;
-
-    @Column(name = "activeThreadCount")
     private int activeThreadCount;
-
-    @Column(name = "avgSizeRecieved")
     private double avgSizeRecieved;
-
-    @Column(name ="avgSizeSent")
     private double avgSizeSent;
-
-    @Column(name ="faultsRecieving")
     private long faultsRecieving;
-
-    @Column(name ="faultSending")
     private long faultSending;
-
-    @Column(name ="messagesRecieved")
     private long messagesRecieved;
-
-    @Column(name ="messageSent")
     private long messageSent;
-
-    @Column(name ="queueSize")
     private int queueSize;
-
-    @Column(name = "time")
     private Date date;
-
     private RequestType type;
 
     public double getAvgSizeRecieved() {
