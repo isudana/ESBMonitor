@@ -6,6 +6,7 @@ import org.wso2.esbMonitor.dumpHandlers.HeapDumper;
 import org.wso2.esbMonitor.jvmDetails.CPULoadMonitor;
 import org.wso2.esbMonitor.jvmDetails.MemoryMonitor;
 import org.wso2.esbMonitor.network.PassThruHTTPSenderAndReciever;
+import org.wso2.esbMonitor.tasks.DBCleanerTask;
 import org.wso2.esbMonitor.tasks.DBTaskRunner;
 import org.wso2.esbMonitor.tasks.JVMTaskRunner;
 import org.wso2.esbMonitor.tasks.NetworkMonitor;
@@ -32,6 +33,7 @@ public class Configuration {
     private Double CPU_USAGE = 0.05;
     private int HTTP_REQUESTS = 0;
     private int MAX_REQESTQUEUE_SIZE = 0;
+    private long DB_CLEANER_TASK = 24L;
 
     public void initProperties(){
         readPropFile();
@@ -46,6 +48,7 @@ public class Configuration {
         RemoteConnector.setJMXURL(JMXURL);
         RemoteConnector.setUSERNAME(USERNAME);
         RemoteConnector.setPASSWORD(PASSWORD);
+        DBCleanerTask.setWaitTime(DB_CLEANER_TASK);
 
     }
 
@@ -118,6 +121,11 @@ public class Configuration {
             if(prop.getProperty("JMX_USER_PASSWORD") != null){
                 PASSWORD=prop.getProperty("JMX_USER_PASSWORD");
                 logger.info("Added JMX user password"+PASSWORD);
+            }
+
+            if(prop.getProperty("DB_CLEANER_TASK") != null){
+                DB_CLEANER_TASK=Long.parseLong(prop.getProperty("DB_CLEANER_TASK"));
+                logger.info("Added DB cleaner task wait time "+ DB_CLEANER_TASK);
             }
 
 

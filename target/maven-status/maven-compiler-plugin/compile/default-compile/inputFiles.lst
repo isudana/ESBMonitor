@@ -7,8 +7,10 @@ E:\Project\esbMonitor\EsbMonitor\src\main\java\org\wso2\esbMonitor\dumpHandlers\
 E:\Project\esbMonitor\EsbMonitor\src\main\java\org\wso2\esbMonitor\jvmDetails\MemoryMonitor.java
 E:\Project\esbMonitor\EsbMonitor\src\main\java\org\wso2\esbMonitor\connector\RemoteConnector.java
 E:\Project\esbMonitor\EsbMonitor\src\main\java\org\wso2\esbMonitor\connector\DBConnector.java
+E:\Project\esbMonitor\EsbMonitor\src\main\java\org\wso2\esbMonitor\utils\FileWriter.java
 E:\Project\esbMonitor\EsbMonitor\src\main\java\org\wso2\esbMonitor\jvmDetails\CPULoadMonitor.java
 E:\Project\esbMonitor\EsbMonitor\src\main\java\org\wso2\esbMonitor\dumpHandlers\HeapDumper.java
+E:\Project\esbMonitor\EsbMonitor\src\main\java\org\wso2\esbMonitor\connector\GMailConnector.java
 E:\Project\esbMonitor\EsbMonitor\src\main\java\org\wso2\esbMonitor\reporting\Templates.java
 E:\Project\esbMonitor\EsbMonitor\src\main\java\org\wso2\esbMonitor\persistance\PersistanceImpl.java
 E:\Project\esbMonitor\EsbMonitor\src\main\java\org\wso2\esbMonitor\ESBMonitor.java

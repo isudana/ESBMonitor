@@ -2,7 +2,8 @@ package org.wso2.esbMonitor.network;
 
 import org.apache.log4j.Logger;
 import org.wso2.esbMonitor.connector.RemoteConnector;
-import org.wso2.esbMonitor.persistance.PersistanceImpl;
+import org.wso2.esbMonitor.persistance.PersistenceService;
+
 import javax.management.*;
 import java.io.IOException;
 import java.util.Date;
@@ -15,7 +16,7 @@ import java.util.Date;
 public class PassThruHTTPSenderAndReciever {
 
     final static Logger logger = Logger.getLogger(PassThruHTTPSenderAndReciever.class);
-    private static String bean = "org.apache.synapse:Type=Transport,Name=passthru-http-sender";
+    private static String bean;
 
     // needs to be initialized by a property file
     private static int maxThreadCount;
@@ -42,7 +43,21 @@ public class PassThruHTTPSenderAndReciever {
             passThruHTTPBean.setQueueSize((Integer) RemoteConnector.getMbeanAttribute(mbeanName,"QueueSize"));
             passThruHTTPBean.setMessageSent((Long) RemoteConnector.getMbeanAttribute(mbeanName,"MessagesSent"));
             passThruHTTPBean.setMessagesRecieved((Long) RemoteConnector.getMbeanAttribute(mbeanName, "MessagesReceived"));
-            //passThruHTTPBean.setDate(new Date());
+            passThruHTTPBean.setDate(new Date());
+            switch (bean){
+                case "org.apache.synapse:Type=Transport,Name=passthru-http-sender":
+                    passThruHTTPBean.setType(RequestType.HTTP_SENDER);
+                    break;
+                case "org.apache.synapse:Type=Transport,Name=passthru-http-receiver":
+                    passThruHTTPBean.setType(RequestType.HTTP_RECEIVER);
+                    break;
+                case "org.apache.synapse:Type=Transport,Name=passthru-https-receiver":
+                    passThruHTTPBean.setType(RequestType.HTTPS_RECEIVER);
+                    break;
+                case "org.apache.synapse:Type=Transport,Name=passthru-https-sender":
+                    passThruHTTPBean.setType(RequestType.HTTP_SENDER);
+
+            }
 
             logger.info(passThruHTTPBean.getMessageSent() +" "+ passThruHTTPBean.getActiveThreadCount());
             if (passThruHTTPBean.getActiveThreadCount() > maxThreadCount || passThruHTTPBean.getQueueSize() > maxQueueSize) {
@@ -52,7 +67,7 @@ public class PassThruHTTPSenderAndReciever {
                 logger.info("HTTP network load is normal");
             }
             logger.info("Adding network event to scheduledList");
-            PersistanceImpl.addNetworkEvent(passThruHTTPBean);
+            PersistenceService.addNetworkEvent(passThruHTTPBean);
         } catch (MBeanException e) {
             logger.error(e.getMessage());
         } catch (AttributeNotFoundException e) {

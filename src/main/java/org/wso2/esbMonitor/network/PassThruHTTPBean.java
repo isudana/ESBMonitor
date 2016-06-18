@@ -45,6 +45,8 @@ public class PassThruHTTPBean {
     @Column(name = "time")
     private Date date;
 
+    private RequestType type;
+
     public double getAvgSizeRecieved() {
         return avgSizeRecieved;
     }
@@ -59,6 +61,14 @@ public class PassThruHTTPBean {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public RequestType getType() {
+        return type;
+    }
+
+    public void setType(RequestType type) {
+        this.type = type;
     }
 
     public int getActiveThreadCount() {

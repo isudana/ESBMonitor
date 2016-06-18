@@ -61,9 +61,9 @@ public class ThreadDumpCreator {
             memoryInfo = RemoteConnector.getRemote().getMBeanInfo(bean);
             RemoteConnector.getRemote().getObjectInstance(bean);
             MBeanOperationInfo[] mBeanAttributeInfos = memoryInfo.getOperations();
-            for (MBeanOperationInfo mBeanAttributeInfo : mBeanAttributeInfos) {
-                System.out.println(mBeanAttributeInfo.getName());
-            }
+//            for (MBeanOperationInfo mBeanAttributeInfo : mBeanAttributeInfos) {
+//                System.out.println(mBeanAttributeInfo.getName());
+//            }
             long[] allThreadIds = (long[]) RemoteConnector.getRemote().getAttribute(bean, "AllThreadIds");
             Object[] params = new Object[2];
             int maxDepth = 100;
@@ -71,7 +71,6 @@ public class ThreadDumpCreator {
             params[1] = maxDepth;
             String[] opSigs = {allThreadIds.getClass().getName(), int.class.getName()};
             CompositeData[] threadInfos = (CompositeData[]) RemoteConnector.getRemote().invoke(bean, "getThreadInfo", params, opSigs);
-//            ThreadInfo[] threadInfos ;
             for (CompositeData threadInfo : threadInfos) {
                 dump.append('"');
                 dump.append(threadInfo.get("threadName").toString());
@@ -80,7 +79,6 @@ public class ThreadDumpCreator {
                 dump.append("\n   java.lang.Thread.State: ");
                 dump.append(state);
                 final CompositeData[] stackTraceElements = (CompositeData[]) threadInfo.get("stackTrace");
-                System.out.println(threadInfo.toString());
                 for (CompositeData stackTraceElement : stackTraceElements) {
                     dump.append("\n        at ");
                     // String declaringClass= (String) stackTraceElement.get("declaringClass");
@@ -94,7 +92,6 @@ public class ThreadDumpCreator {
                                             (fileName != null ? "(" + fileName + ")" : "(Unknown Source)"))));
                 }
                 dump.append("\n\n");
-                System.out.println(dump.toString());
                 byte [] data = dump.toString().getBytes();
                 FileWriter.writeFile(filePath+"ThreadDump"+new Date().toString().replaceAll(":","")+".txt",data);
             }

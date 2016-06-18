@@ -1,3 +1,4 @@
+org\wso2\esbMonitor\connector\GMailConnector.class
 org\wso2\esbMonitor\jvmDetails\MemoryMonitor.class
 org\wso2\esbMonitor\reporting\Templates.class
 org\wso2\esbMonitor\reporting\Templates$CurrencyValueFormatter.class
@@ -20,3 +21,4 @@ org\wso2\esbMonitor\reporting\ReportGenerator.class
 org\wso2\esbMonitor\ESBMonitor.class
 org\wso2\esbMonitor\dumpHandlers\HeapDumper.class
 org\wso2\esbMonitor\tasks\NetworkMonitor.class
+org\wso2\esbMonitor\utils\FileWriter.class

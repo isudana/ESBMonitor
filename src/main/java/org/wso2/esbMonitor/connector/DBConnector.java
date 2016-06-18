@@ -3,58 +3,34 @@ package org.wso2.esbMonitor.connector;
 import org.apache.log4j.Logger;
 
 import java.sql.*;
-import java.util.ArrayList;
 
 /**
- * Created by Dinanjana on 22/05/2016.
+ * Created by Dinanjana
+ * on 22/05/2016.
+ * This connector is
+ * used to connect to
+ * derby embedded db
  */
 public class DBConnector {
 
+    private static final String protocol = "jdbc:derby:";
+    private static String dbName = "wso2FlightRecorder";
+    private static Connection conn ;
+    private static Logger logger = Logger.getLogger(DBConnector.class);
 
-    private String framework = "embedded";
-    private String protocol = "jdbc:derby:";
-    private String dbName = "wso2FlightRecorder";
-    private Connection conn ;
-    private Logger logger = Logger.getLogger(DBConnector.class);
-
-    public Connection createDBConnection() {
-        Statement s;
-
-        ArrayList<Statement> statements = new ArrayList<Statement>();
+    public static void initDBConnection() {
         try {
             conn = DriverManager.getConnection(protocol + dbName
                     + ";create=true");
-            System.out.println("Connected to and created database " + dbName);
-
-            // We want to control transactions manually. Autocommit is on by
-            // default in JDBC.
-            conn.setAutoCommit(false);
-
-            /* Creating a statement object that we can use for running various
-             * SQL statements commands against the database.*/
-            s = conn.createStatement();
-            statements.add(s);
-
-            //creates tables...
-            s.execute("create table activePassThroughConnectionsHTTPListner (eventTime TIMESTAMP , activeConnections int)");
-            s.execute("create table activePassThroughConnectionsHTTPSender (eventTime TIMESTAMP , activeConnections int)");
-            s.execute("create table activePassThroughConnectionsHTTPSListner (eventTime TIMESTAMP , activeConnections int)");
-            s.execute("create table activePassThroughConnectionsHTTPSSender (eventTime TIMESTAMP , activeConnections int)");
-            ResultSet resultSet=  s.executeQuery("DESCRIBE TABLE activePassThroughConnectionsHTTPListner ");
-
-
-            //System.out.println("Created table location");
-
-            return conn;
+            logger.info("Connected to and created database " + dbName);
         } catch (SQLException e) {
             e.printStackTrace();
             logger.error("ERROR : ", e);
+            initDBConnection();
         }
-
-        return null;
     }
 
-    public void closeDBConnection()  {
+    public static void closeDBConnection()  {
         try {
             DriverManager.getConnection("jdbc:derby:;shutdown=true");
         } catch (SQLException e) {
@@ -71,4 +47,9 @@ public class DBConnector {
         }
 
     }
+
+    public static Connection getConn() {
+        return conn;
+    }
+
 }
