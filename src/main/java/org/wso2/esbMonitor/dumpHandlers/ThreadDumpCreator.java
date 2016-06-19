@@ -1,3 +1,22 @@
+/*
+ *
+ *  * Copyright (c) 2016, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *  *
+ *  * Licensed under the Apache License, Version 2.0 (the "License");
+ *  * you may not use this file except in compliance with the License.
+ *  * You may obtain a copy of the License at
+ *  *
+ *  * http://www.apache.org/licenses/LICENSE-2.0
+ *  *
+ *  * Unless required by applicable law or agreed to in writing, software
+ *  * distributed under the License is distributed on an "AS IS" BASIS,
+ *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  * See the License for the specific language governing permissions and
+ *  * limitations under the License.
+ *
+ *
+ */
+
 package org.wso2.esbMonitor.dumpHandlers;
 
 import org.apache.log4j.Logger;
@@ -21,7 +40,7 @@ public class ThreadDumpCreator {
     private static MBeanInfo memoryInfo;
     private static ObjectName bean = null;
     private static boolean THREAD_DUMP_IN_PROGRESS=false;
-    private static String filePath="ThreadDumps//";
+    private static String filePath;
     private static String THREAD_DUMP_BEAN_NAME = "java.lang:type=Threading";
 
     /**
@@ -118,5 +137,9 @@ public class ThreadDumpCreator {
 
     public static boolean isThreadDumpInProgress() {
         return THREAD_DUMP_IN_PROGRESS;
+    }
+
+    public static void setFilePath(String filePath) {
+        ThreadDumpCreator.filePath = filePath;
     }
 }
